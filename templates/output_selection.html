@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Output Selection</title>
+  <link rel="stylesheet" href="/static/home.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Generated Study Content</h1>
+
+    <!-- Notes Results Section -->
+    <section id="notes-section">
+      <h2>Generated Notes</h2>
+      <div id="generated-notes"></div>
+    </section>
+
+    <!-- Flashcard Results Section -->
+    <section id="flashcard-section" class="flashcard-container">
+      <h2>Flashcard</h2>
+      <div id="flashcard" class="flashcard">
+        <div id="flashcard-front" class="flashcard-face">Loading question...</div>
+        <div id="flashcard-back" class="flashcard-face">Loading answer...</div>
+      </div>
+      <button class="btn" id="flip-btn">Flip Card</button>
+    </section>
+
+    <!-- Quiz Results Section -->
+    <section id="quiz-section">
+      <h2>Quiz</h2>
+      <h3>Question:</h3>
+      <p id="quiz-question">Loading...</p>
+      <h3>Choices:</h3>
+      <div id="quiz-choices">
+        <!-- Choices will be dynamically generated here -->
+      </div>
+      <button class="btn" id="submit-answer">Submit Answer</button>
+      <p id="quiz-feedback"></p>
+    </section>
+
+    <!-- Story-based Learning Section -->
+    <section id="story-section">
+      <h2>Story-based Learning</h2>
+      <div id="generated-story" class="story-container"></div>
+    </section>
+
+    <!-- Image Section -->
+    <section id="image-section">
+      <h2>Generated Image</h2>
+      <img id="generated-image" alt="Generated study image" src="">
+    </section>
+
+    <!-- Button to go back to home page -->
+    <a href="/" class="btn">Return to Home</a>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const flashcardQuestion = localStorage.getItem('flashcardQuestion');
+      const flashcardAnswer = localStorage.getItem('flashcardAnswer');
+      const quizQuestion = localStorage.getItem('quizQuestion');
+      const quizChoices = JSON.parse(localStorage.getItem('quizChoices'));
+      const quizCorrectAnswer = localStorage.getItem('quizCorrectAnswer');
+      const generatedNotes = localStorage.getItem('generatedNotes');
+      const generatedStory = localStorage.getItem('generatedStory');
+      const generatedImage = localStorage.getItem('generatedImage');
+
+      // Flashcard content
+      const flashcardSection = document.getElementById('flashcard-section');
+      const flashcardFront = document.getElementById('flashcard-front');
+      const flashcardBack = document.getElementById('flashcard-back');
+      const flipBtn = document.getElementById('flip-btn');
+
+      if (flashcardQuestion && flashcardAnswer) {
+        flashcardFront.textContent = flashcardQuestion;
+        flashcardBack.textContent = flashcardAnswer;
+        flipBtn.addEventListener('click', () => {
+          document.getElementById('flashcard').classList.toggle('flipped');
+        });
+      } else {
+        flashcardSection.style.display = 'none';
+      }
+
+      // Notes content
+      const notesSection = document.getElementById('notes-section');
+      const generatedNotesElement = document.getElementById('generated-notes');
+
+      if (generatedNotes) {
+        generatedNotesElement.innerHTML = generatedNotes;
+      } else {
+        notesSection.style.display = 'none';
+      }
+
+      // Quiz content
+      const quizSection = document.getElementById('quiz-section');
+      const quizQuestionElement = document.getElementById('quiz-question');
+      const quizChoicesContainer = document.getElementById('quiz-choices');
+      const quizFeedback = document.getElementById('quiz-feedback');
+
+      if (quizQuestion && quizChoices && quizChoices.length > 0) {
+        quizQuestionElement.textContent = quizQuestion;
+        quizChoices.forEach((choice, index) => {
+          const choiceLabel = document.createElement('label');
+          const choiceInput = document.createElement('input');
+          choiceInput.type = 'radio';
+          choiceInput.name = 'quiz-choice';
+          choiceInput.value = choice;
+          choiceInput.id = `choice-${index}`;
+          choiceLabel.htmlFor = `choice-${index}`;
+          choiceLabel.appendChild(choiceInput);
+          choiceLabel.append(` ${choice}`);
+          quizChoicesContainer.appendChild(choiceLabel);
+          quizChoicesContainer.appendChild(document.createElement('br'));
+        });
+
+        document.getElementById('submit-answer').addEventListener('click', () => {
+          const selectedChoice = document.querySelector('input[name="quiz-choice"]:checked');
+          if (selectedChoice) {
+            if (selectedChoice.value === quizCorrectAnswer) {
+              quizFeedback.textContent = 'Correct!';
+              quizFeedback.style.color = 'green';
+            } else {
+              quizFeedback.textContent = `Incorrect. The correct answer is: ${quizCorrectAnswer}`;
+              quizFeedback.style.color = 'red';
+            }
+          } else {
+            quizFeedback.textContent = 'Please select an answer.';
+            quizFeedback.style.color = 'orange';
+          }
+        });
+      } else {
+        quizSection.style.display = 'none';
+      }
+
+      // Story content
+      const storySection = document.getElementById('story-section');
+      const generatedStoryElement = document.getElementById('generated-story');
+
+      if (generatedStory) {
+        generatedStoryElement.innerHTML = generatedStory;
+      } else {
+        storySection.style.display = 'none';
+      }
+
+      // Image content
+      const imageSection = document.getElementById('image-section');
+      const generatedImageElement = document.getElementById('generated-image');
+
+      if (generatedImage) {
+        generatedImageElement.src = generatedImage;
+      } else {
+        imageSection.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>

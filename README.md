@@ -1,1 +1,1 @@
-# ai-left
+# ai_learningtype

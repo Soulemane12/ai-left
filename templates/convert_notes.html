@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Convert Notes</title>
+  <link rel="stylesheet" href="/static/home.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <script src="/static/html.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>AdaptStudy.ai - Convert Notes</h1>
+      <nav>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/convert-notes" class="active">Convert Notes</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <h2>Input Notes</h2>
+      <textarea id="notes-textarea" placeholder="Type your notes here..." rows="10"></textarea>
+      
+      <div id="microphone-container">
+        <button id="microphone-btn" class="btn">
+          <i class="fas fa-microphone"></i> Record
+        </button>
+        <span id="recording-status"></span>
+      </div>
+
+      <h3>Pick Type:</h3>
+      <div class="style-buttons">
+        <label>
+          <input type="checkbox" id="flashcard-option" value="Flashcards"> Flashcards
+        </label>
+        <label>
+          <input type="checkbox" id="quiz-option" value="Quiz"> Quiz
+        </label>
+        <label>
+          <input type="checkbox" id="notes-option" value="Notes"> Summarized Notes
+        </label>
+        <label>
+          <input type="checkbox" id="story-option" value="Story"> Story-based Learning
+        </label>
+        <label>
+          <input type="checkbox" id="image-option" value="Images"> Images
+        </label>
+      </div>
+
+      <button id="generate-btn" class="btn" disabled>Generate</button>
+    </main>
+  </div>
+</body>
+</html>
